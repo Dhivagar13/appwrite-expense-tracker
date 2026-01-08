@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import databaseService from '../appwrite/database';
 import { useAuth } from '../context/AuthContext';
 
@@ -100,6 +101,10 @@ const AddExpense = ({ onAdd }) => {
             </form>
         </div>
     );
+};
+
+AddExpense.propTypes = {
+    onAdd: PropTypes.func.isRequired,
 };
 
 export default AddExpense;

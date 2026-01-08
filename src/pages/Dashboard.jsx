@@ -12,19 +12,19 @@ const Dashboard = () => {
     const [filterCategory, setFilterCategory] = useState('All');
 
     useEffect(() => {
+        const fetchExpenses = async () => {
+            setLoading(true);
+            const data = await databaseService.getExpenses(user.$id);
+            if (data) {
+                setExpenses(data.documents);
+            }
+            setLoading(false);
+        };
+
         if (user) {
             fetchExpenses();
         }
     }, [user]);
-
-    const fetchExpenses = async () => {
-        setLoading(true);
-        const data = await databaseService.getExpenses(user.$id);
-        if (data) {
-            setExpenses(data.documents);
-        }
-        setLoading(false);
-    };
 
     const handleAddExpense = (newExpense) => {
         setExpenses([newExpense, ...expenses]);

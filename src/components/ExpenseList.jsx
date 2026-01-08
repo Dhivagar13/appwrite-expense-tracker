@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import databaseService from '../appwrite/database';
 
 const ExpenseList = ({ expenses, onDelete }) => {
@@ -23,16 +24,15 @@ const ExpenseList = ({ expenses, onDelete }) => {
                 <span>Title</span>
                 <span>Category</span>
                 <span>Amount</span>
-                <span>Action</span>
             </div>
             {expenses.map((expense) => (
                 <div key={expense.$id} className="expense-item">
-                    <span className="expense-date">{new Date(expense.date).toLocaleDateString()}</span>
-                    <span className="expense-title">{expense.title}</span>
-                    <span className={`expense-category category-${expense.category.toLowerCase()}`}>
+                    <span className="expense-date" data-label="Date">{new Date(expense.date).toLocaleDateString()}</span>
+                    <span className="expense-title" data-label="Title">{expense.title}</span>
+                    <span className={`expense-category category-${expense.category.toLowerCase()}`} data-label="Category">
                         {expense.category}
                     </span>
-                    <span className="expense-amount">₹{expense.amount.toFixed(2)}</span>
+                    <span className="expense-amount" data-label="Amount">₹{expense.amount.toFixed(2)}</span>
                     <button
                         onClick={() => handleDelete(expense.$id)}
                         className="btn-delete"
@@ -44,6 +44,19 @@ const ExpenseList = ({ expenses, onDelete }) => {
             ))}
         </div>
     );
+};
+
+ExpenseList.propTypes = {
+    expenses: PropTypes.arrayOf(
+        PropTypes.shape({
+            $id: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            amount: PropTypes.number.isRequired,
+            category: PropTypes.string.isRequired,
+            date: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
 export default ExpenseList;
